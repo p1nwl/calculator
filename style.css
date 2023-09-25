@@ -18,26 +18,26 @@ body {
 }
 
 .calc-header {
-    max-width: 100%;
+    width: 100%;
     overflow: hidden;
     border-radius: 10px;
 }
 
 .calculator-input {
-    max-width: 100%;
-    height: 150px;
+    width: 90%;
+    height: 120px;
     background-color: #182033;
     color: white;
     font-size: 60px;
     border-width: 0px;
     outline: none;
-    padding: 0 20px;
+    padding: 0 5%;
 }
 
 .calc-panel {
     background-color: #242c43;
     max-width: 100%;
-    height: 30rem;
+    height: 25rem;
     border-radius: 10px;
     margin: 20px 0;
     padding: 10px;
@@ -47,14 +47,18 @@ body {
     grid-auto-flow: row;
 }
 
+
+
 .btn {
     width: 80%;
     height: 80%;
     font-weight: bold !important;
     border-radius: 10px;
+    border-color: white;
     font-size: 1.5rem;
+    color: gray;
     margin: auto;
-    box-shadow: 10px;
+    box-shadow: 1px 4px 0px -1px rgba(255, 255, 255, 1);
 }
 
 .panel-footer {
@@ -70,7 +74,11 @@ body {
     height: 80%;
     border-radius: 10px;
     font-size: 1.5rem;
+    color: white;
+    background-color: #63709b;
     margin: auto;
+    box-shadow: 1px 4px 0px -1px rgba(99,112,155,1);
+    border-color: #63709b;
     font-weight: bold !important;
 }
 
@@ -79,9 +87,21 @@ body {
     height: 80%;
     border-radius: 10px;
     font-size: 1.5rem;
+    color: white;
+    background-color: #63709b;
     margin: auto;
+    box-shadow: 1px 4px 0px -1px rgba(99,112,155,1);
+    border-color: #63709b;
     font-weight: bold !important;
 }
+
+.delete {
+    background-color: #63709b;
+    box-shadow: 1px 4px 0px -1px rgba(99,112,155,1);
+    border-color: #63709b;
+    color: white;
+}
+
 
 
 
