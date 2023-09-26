@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let summary = 0;
     let firstNumber = null;
     let secondNumber = null;
+    let switcher = 0;
 
     const zero = document.querySelector('.buttonZero');
     const one = document.querySelector('.buttonOne');
@@ -28,88 +29,158 @@ document.addEventListener('DOMContentLoaded', () => {
 
     input.addEventListener('input', (event) => {
         text = event.target.value;
+        secondNumber = text;
     })
 
     zero.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     one.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     two.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     three.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     four.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     five.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     six.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     seven.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     eight.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
     })
     nine.addEventListener('click', (event) => {
-        text = text + event.target.innerText;
+        text += event.target.innerText;
         input.value = text;
+        secondNumber = text;
+    })
+    dot.addEventListener('click', (event) => {
+        text += event.target.innerText;
+        input.value = text;
+        secondNumber = text;
     })
 
     plus.addEventListener('click', (event) => {
+
+        switcher = 1;
+        firstNumber = text;
+        summary += +firstNumber;
+        input.value = summary;
         
-        if (firstNumber === null) {
-            firstNumber = text;
-            text = '';
-            input.value = '';
-            return;
-        }
+        text = '';
+        firstNumber = null;
+    })
+    minus.addEventListener('click', (event) => {
 
-        if (secondNumber === null) {
-            secondNumber = text;
-            text = '';
-            input.value = '';
-        }
+        switcher = 2;
+        firstNumber = text;
+        summary -= +firstNumber;
+        input.value = summary;
+        
+        text = '';
+        firstNumber = null;
+    })
+    divider.addEventListener('click', (event) => {
 
-        if (firstNumber && secondNumber) {
-            text = summ(+firstNumber, +secondNumber);
-            input.value = text;
-            text = '';
-            firstNumber = null;
-            secondNumber = null;
-        }
+        switcher = 3;
+        firstNumber = text;
+        summary /= +firstNumber;
+        input.value = summary;
+        
+        text = '';
+        firstNumber = null;
+    })
+    multiplier.addEventListener('click', (event) => {
 
-        input.value = '';
+        switcher = 4;
+        firstNumber = text;
+        summary *= +firstNumber;
+        input.value = summary;
+        
+        text = '';
+        firstNumber = null;
     })
 
     equalSign.addEventListener('click', (event) => {
-        if (secondNumber === null) {
-            secondNumber = text;
-        }
 
-        if (firstNumber && secondNumber) {
-            text = summ(+firstNumber, +secondNumber);
-            input.value = text;
-            text = '';
+        switch (switcher) {
+            case 1:
+                if (secondNumber) {
+                    summary += +(secondNumber);
+                    input.value = summary;
+                    text = '';
+                    firstNumber = null;
+                    break;
+                }
+                break;
+            case 2:
+                if (secondNumber) {
+                    summary += +secondNumber;
+                    input.value = summary;
+                    break;
+                }
+        
+                if (firstNumber && secondNumber) {
+                    summary = substract(+firstNumber, +secondNumber);
+                    input.value = summary;
+                    text = '';
+                }
+                break;
+            case 3:
+                if (secondNumber) {
+                    summary += +secondNumber;
+                    input.value = summary;
+                    break;
+                }
+        
+                if (firstNumber && secondNumber) {
+                    summary = divide(+firstNumber, +secondNumber);
+                    input.value = summary;
+                    text = '';
+                }
+                break;
+            case 4:
+                if (secondNumber) {
+                    summary += +secondNumber;
+                    input.value = summary;
+                    break;
+                }
+        
+                if (firstNumber && secondNumber) {
+                    summary = multiply(+firstNumber, +secondNumber);
+                    input.value = summary;
+                    text = '';
+                }
+                break;
         }
-
-        firstNumber = null;
-        secondNumber = null;
     })
 
     reset.addEventListener('click', (event) => {
@@ -117,36 +188,29 @@ document.addEventListener('DOMContentLoaded', () => {
         text = '';
         firstNumber = null;
         secondNumber = null;
+        summary = 0;
+        switcher = 0;
     })
-    
-    // const output = document.querySelector('.output');
-    // const outputText = output.innerText;
-    // let text = 0;
-    // let numberOne = null;
-    // let numberTwo = null;
-    // console.log(numberOne === null)
-
-    // button.addEventListener('click', () => {
-
-    //     if (numberOne === null) {
-    //         numberOne = text;
-    //         input.value = '0';
-    //         return;
-    //     }
-
-    //     if (numberTwo === null) {
-    //         numberTwo = text;
-    //     }
-        
-    //     if (numberOne && numberTwo) {
-    //         output.innerText = outputText + ' ' + increase(numberOne, numberTwo);
-    //     }
-
-    //     input.value = '0';
-    // })
+    deleteSign.addEventListener('click', (event) => {
+        text = text.slice(0, (text.length - 1));
+        input.value = text;
+    })
     
 }) 
 
-function summ(a,b) {
+function add(a,b) {
     return a + b;
 }
+
+function substract(a,b) {
+    return a - b;
+}
+
+function multiply(a,b) {
+    return a * b;
+}
+
+function divide(a,b) {
+    return a / b;
+}
+
