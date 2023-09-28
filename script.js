@@ -6,23 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let secondNumber = null;
     let switcher = 0;
 
-    const zero = document.querySelector('.buttonZero');
-    const one = document.querySelector('.buttonOne');
-    const two = document.querySelector('.buttonTwo');
-    const three = document.querySelector('.buttonThree');
-    const four = document.querySelector('.buttonFour');
-    const five = document.querySelector('.buttonFive');
-    const six = document.querySelector('.buttonSix');
-    const seven = document.querySelector('.buttonSeven');
-    const eight = document.querySelector('.buttonEight');
-    const nine = document.querySelector('.buttonNine');
+    const numbers = document.querySelectorAll('.number')
 
     const deleteSign = document.querySelector('.delete');
     const plus = document.querySelector('.plusSign');
     const minus = document.querySelector('.minusSign');
     const divider = document.querySelector('.divider');
     const multiplier = document.querySelector('.multiplier');
-    const dot = document.querySelector('.dot');
 
     const reset = document.querySelector('.reset');
     const equalSign = document.querySelector('.equalSign');
@@ -32,61 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
         secondNumber = text;
     })
 
-    zero.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    one.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    two.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    three.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    four.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    five.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    six.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    seven.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    eight.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    nine.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
-    dot.addEventListener('click', (event) => {
-        text += event.target.innerText;
-        input.value = text;
-        secondNumber = text;
-    })
+    for (const number of numbers) {
+        number.addEventListener('click', (event) => {
+            text += event.target.innerText;
+            input.value = text;
+            secondNumber = text;
+        })
+    };
 
     plus.addEventListener('click', (event) => {
 
@@ -100,19 +42,41 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     minus.addEventListener('click', (event) => {
 
+        if (secondNumber === null) {
+            input.value = -0;
+        }
         switcher = 2;
+        if (summary) {
+            firstNumber = text;
+            summary -= +firstNumber;
+            input.value = summary;
+
+            text = '';
+            firstNumber = null;
+            return;
+        }
+
         firstNumber = text;
-        summary -= +firstNumber;
+        summary += +firstNumber;
         input.value = summary;
         
         text = '';
         firstNumber = null;
     })
     divider.addEventListener('click', (event) => {
-
+        
         switcher = 3;
+        if (summary) {
+            summary /= +secondNumber;
+            input.value = summary;
+
+            text = '';
+            firstNumber = null;
+            return;
+        }
+
         firstNumber = text;
-        summary /= +firstNumber;
+        summary += +firstNumber;
         input.value = summary;
         
         text = '';
@@ -121,8 +85,17 @@ document.addEventListener('DOMContentLoaded', () => {
     multiplier.addEventListener('click', (event) => {
 
         switcher = 4;
+        if (summary) {
+            summary *= +secondNumber;
+            input.value = summary;
+
+            text = '';
+            firstNumber = null;
+            return;
+        }
+
         firstNumber = text;
-        summary *= +firstNumber;
+        summary += +firstNumber;
         input.value = summary;
         
         text = '';
@@ -133,52 +106,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
         switch (switcher) {
             case 1:
-                if (secondNumber) {
-                    summary += +(secondNumber);
+                summary += +secondNumber;
+                input.value = summary;
+                text = '';
+                firstNumber = null;
+                break;
+            case 2:
+                if (summary) {
+                    summary -= +secondNumber;
                     input.value = summary;
+
                     text = '';
                     firstNumber = null;
                     break;
                 }
-                break;
-            case 2:
-                if (secondNumber) {
-                    summary += +secondNumber;
-                    input.value = summary;
-                    break;
-                }
-        
-                if (firstNumber && secondNumber) {
-                    summary = substract(+firstNumber, +secondNumber);
-                    input.value = summary;
-                    text = '';
-                }
+
+                summary = substract(firstNumber, secondNumber);
+                input.value = summary;
+                
+                text = '';
+                firstNumber = null;
                 break;
             case 3:
-                if (secondNumber) {
-                    summary += +secondNumber;
+                if (summary) {
+                    summary /= +secondNumber;
                     input.value = summary;
+
+                    text = '';
+                    firstNumber = null;
                     break;
                 }
-        
-                if (firstNumber && secondNumber) {
-                    summary = divide(+firstNumber, +secondNumber);
-                    input.value = summary;
-                    text = '';
-                }
+
+                summary = divide(firstNumber, secondNumber);
+                input.value = summary;
+                
+                text = '';
+                firstNumber = null;
                 break;
             case 4:
-                if (secondNumber) {
-                    summary += +secondNumber;
+                if (summary) {
+                    summary *= +secondNumber;
                     input.value = summary;
+
+                    text = '';
+                    firstNumber = null;
                     break;
                 }
-        
-                if (firstNumber && secondNumber) {
-                    summary = multiply(+firstNumber, +secondNumber);
-                    input.value = summary;
-                    text = '';
-                }
+
+                summary = multiply(firstNumber, secondNumber);
+                input.value = summary;
+                
+                text = '';
+                firstNumber = null;
                 break;
         }
     })
@@ -192,8 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
         switcher = 0;
     })
     deleteSign.addEventListener('click', (event) => {
+        text = summary.toString();
         text = text.slice(0, (text.length - 1));
-        input.value = text;
+        summary = +text;
+        input.value = summary;
+        if (isNaN(input.value)) {
+            input.value = 0;
+        }
+
+        text = '';
+        firstNumber = null;
     })
     
 }) 
