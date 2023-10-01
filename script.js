@@ -4,7 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let summary = 0;
     let firstNumber = null;
     let secondNumber = null;
-    let switcher = 0;
+    let calcTypeChanger = 0;
+
+    // const calcArray = {
+    //     text: input.value,
+    //     summary: 0,
+    //     firstNumber: null,
+    //     secondNumber: null,
+    //     calcTypeChanger: 0
+    // }
 
     const numbers = document.querySelectorAll('.number')
 
@@ -30,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     };
 
-    plus.addEventListener('click', (event) => {
+    plus.addEventListener('click', () => {
 
-        switcher = 1;
+        calcTypeChanger = 1;
         firstNumber = text;
         summary += +firstNumber;
         input.value = summary;
@@ -42,10 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     minus.addEventListener('click', (event) => {
 
-        if (secondNumber === null) {
-            input.value = -0;
+        if (!(secondNumber)) {
+            text = event.target.innerText;
+            input.value = text;
+            return;
         }
-        switcher = 2;
+
+        calcTypeChanger = 2;
+
         if (summary) {
             firstNumber = text;
             summary -= +firstNumber;
@@ -63,17 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
         text = '';
         firstNumber = null;
     })
-    divider.addEventListener('click', (event) => {
-        
-        switcher = 3;
-        if (summary) {
-            summary /= +secondNumber;
-            input.value = summary;
+    divider.addEventListener('click', () => {
 
-            text = '';
-            firstNumber = null;
-            return;
-        }
+        calcTypeChanger = 3;
 
         firstNumber = text;
         summary += +firstNumber;
@@ -82,17 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         text = '';
         firstNumber = null;
     })
-    multiplier.addEventListener('click', (event) => {
+    multiplier.addEventListener('click', () => {
 
-        switcher = 4;
-        if (summary) {
-            summary *= +secondNumber;
-            input.value = summary;
-
-            text = '';
-            firstNumber = null;
-            return;
-        }
+        calcTypeChanger = 4;
 
         firstNumber = text;
         summary += +firstNumber;
@@ -102,9 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
         firstNumber = null;
     })
 
-    equalSign.addEventListener('click', (event) => {
+    equalSign.addEventListener('click', () => {
 
-        switch (switcher) {
+        switch (calcTypeChanger) {
             case 1:
                 summary += +secondNumber;
                 input.value = summary;
@@ -162,24 +158,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    reset.addEventListener('click', (event) => {
+    reset.addEventListener('click', () => {
         input.value = '';
         text = '';
         firstNumber = null;
         secondNumber = null;
         summary = 0;
-        switcher = 0;
+        calcTypeChanger = 0;
     })
-    deleteSign.addEventListener('click', (event) => {
-        text = summary.toString();
+    deleteSign.addEventListener('click', () => {
+        text = input.value;
         text = text.slice(0, (text.length - 1));
-        summary = +text;
-        input.value = summary;
+        input.value = text;
         if (isNaN(input.value)) {
             input.value = 0;
         }
+        console.log(input.value);
 
-        text = '';
+        summary = 0;
         firstNumber = null;
     })
     
