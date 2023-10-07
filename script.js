@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('calc');
     let summary = 0;
     let currentNumber = null;
-    let calcTypeChanger = undefined;
+    let operationType = undefined;
     let inputText = input.value;
 
     const numbers = document.querySelectorAll('.number')
@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return
         }
 
-        if (calcTypeChanger) {
-            summary = calculateNumbers(summary, currentNumber, calcTypeChanger);
+        if (operationType) {
+            summary = calculateNumbers(summary, currentNumber, operationType);
         } else {
             summary = currentNumber;
         }
@@ -60,28 +60,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     plus.addEventListener('click', (e) => {
         applyOperation();
-        calcTypeChanger = 'plus';
+        operationType = 'plus';
         myDebug();
         selectActiveOperation(e)
     })
 
     minus.addEventListener('click', (e) => {
         applyOperation();
-        calcTypeChanger = 'minus';
+        operationType = 'minus';
         myDebug();
         selectActiveOperation(e)
     })
 
     divider.addEventListener('click', (e) => {
         applyOperation();
-        calcTypeChanger = 'divider';
+        operationType = 'divider';
         myDebug();
         selectActiveOperation(e)
     })
     
     multiplier.addEventListener('click', (e) => {
         applyOperation();
-        calcTypeChanger = 'multiplier';
+        operationType = 'multiplier';
         myDebug();
         selectActiveOperation(e)
     })
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inputText = '';
         currentNumber = null;
         summary = 0;
-        calcTypeChanger = undefined;
+        operationType = undefined;
         myDebug();
         removeActiveOperation();
     })
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
    
     function myDebug() {
-        debug(summary, currentNumber, calcTypeChanger);
+        debug(summary, currentNumber, operationType);
     }
 }) 
 
