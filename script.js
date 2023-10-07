@@ -1,18 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('calc');
-    let text = input.value;
     let summary = 0;
-    let firstNumber = null;
-    let secondNumber = null;
-    let calcTypeChanger = 0;
-
-    // const calcArray = {
-    //     text: input.value,
-    //     summary: 0,
-    //     firstNumber: null,
-    //     secondNumber: null,
-    //     calcTypeChanger: 0
-    // }
+    let currentNumber = null;
+    let calcTypeChanger = undefined;
+    let inputText = input.value;
 
     const numbers = document.querySelectorAll('.number')
 
@@ -26,160 +17,118 @@ document.addEventListener('DOMContentLoaded', () => {
     const equalSign = document.querySelector('.equalSign');
 
     input.addEventListener('input', (event) => {
-        text = event.target.value;
-        secondNumber = text;
+        inputText = event.target.value;
+        currentNumber = +inputText;
     })
 
     for (const number of numbers) {
         number.addEventListener('click', (event) => {
-            text += event.target.innerText;
-            input.value = text;
-            secondNumber = text;
+            inputText += event.target.innerText;
+            input.value = inputText;
+            currentNumber = +inputText;
+            myDebug()
         })
     };
 
-    plus.addEventListener('click', () => {
-
-        calcTypeChanger = 1;
-        firstNumber = text;
-        summary += +firstNumber;
-        input.value = summary;
-        
-        text = '';
-        firstNumber = null;
-    })
-    minus.addEventListener('click', (event) => {
-
-        if (!(secondNumber)) {
-            text = event.target.innerText;
-            input.value = text;
-            return;
+    function applyOperation() {
+        if (currentNumber === null) {
+            return
         }
 
-        calcTypeChanger = 2;
-
-        if (summary) {
-            firstNumber = text;
-            summary -= +firstNumber;
-            input.value = summary;
-
-            text = '';
-            firstNumber = null;
-            return;
+        if (calcTypeChanger) {
+            summary = calculateNumbers(summary, currentNumber, calcTypeChanger);
+        } else {
+            summary = currentNumber;
         }
 
-        firstNumber = text;
-        summary += +firstNumber;
         input.value = summary;
-        
-        text = '';
-        firstNumber = null;
-    })
-    divider.addEventListener('click', () => {
+        currentNumber = null;
+        inputText = '';
+    }
 
-        calcTypeChanger = 3;
+    function removeActiveOperation() {
+        plus.classList.remove('activeButton');
+        minus.classList.remove('activeButton');
+        divider.classList.remove('activeButton');
+        multiplier.classList.remove('activeButton');
+    }
 
-        firstNumber = text;
-        summary += +firstNumber;
-        input.value = summary;
-        
-        text = '';
-        firstNumber = null;
-    })
-    multiplier.addEventListener('click', () => {
+    function selectActiveOperation(e) {
+        removeActiveOperation();
+        e.target.classList.add('activeButton');
+    }
 
-        calcTypeChanger = 4;
-
-        firstNumber = text;
-        summary += +firstNumber;
-        input.value = summary;
-        
-        text = '';
-        firstNumber = null;
+    plus.addEventListener('click', (e) => {
+        applyOperation();
+        calcTypeChanger = 'plus';
+        myDebug();
+        selectActiveOperation(e)
     })
 
-    equalSign.addEventListener('click', () => {
+    minus.addEventListener('click', (e) => {
+        applyOperation();
+        calcTypeChanger = 'minus';
+        myDebug();
+        selectActiveOperation(e)
+    })
 
-        switch (calcTypeChanger) {
-            case 1:
-                summary += +secondNumber;
-                input.value = summary;
-                text = '';
-                firstNumber = null;
-                break;
-            case 2:
-                if (summary) {
-                    summary -= +secondNumber;
-                    input.value = summary;
+    divider.addEventListener('click', (e) => {
+        applyOperation();
+        calcTypeChanger = 'divider';
+        myDebug();
+        selectActiveOperation(e)
+    })
+    
+    multiplier.addEventListener('click', (e) => {
+        applyOperation();
+        calcTypeChanger = 'multiplier';
+        myDebug();
+        selectActiveOperation(e)
+    })
 
-                    text = '';
-                    firstNumber = null;
-                    break;
-                }
-
-                summary = substract(firstNumber, secondNumber);
-                input.value = summary;
-                
-                text = '';
-                firstNumber = null;
-                break;
-            case 3:
-                if (summary) {
-                    summary /= +secondNumber;
-                    input.value = summary;
-
-                    text = '';
-                    firstNumber = null;
-                    break;
-                }
-
-                summary = divide(firstNumber, secondNumber);
-                input.value = summary;
-                
-                text = '';
-                firstNumber = null;
-                break;
-            case 4:
-                if (summary) {
-                    summary *= +secondNumber;
-                    input.value = summary;
-
-                    text = '';
-                    firstNumber = null;
-                    break;
-                }
-
-                summary = multiply(firstNumber, secondNumber);
-                input.value = summary;
-                
-                text = '';
-                firstNumber = null;
-                break;
-        }
+    equalSign.addEventListener('click', (e) => {
+        applyOperation();
+        myDebug();
     })
 
     reset.addEventListener('click', () => {
         input.value = '';
-        text = '';
-        firstNumber = null;
-        secondNumber = null;
+        inputText = '';
+        currentNumber = null;
         summary = 0;
-        calcTypeChanger = 0;
+        calcTypeChanger = undefined;
+        myDebug();
+        removeActiveOperation();
     })
+
     deleteSign.addEventListener('click', () => {
-        text = input.value;
-        text = text.slice(0, (text.length - 1));
-        input.value = text;
+        let value = input.value;
+        value = value.slice(0, (value.length - 1));
+        input.value = value;
         if (isNaN(input.value)) {
             input.value = 0;
         }
-        console.log(input.value);
-
-        summary = 0;
-        firstNumber = null;
+        currentNumber = input.value;
+        myDebug();
     })
-    
+   
+    function myDebug() {
+        debug(summary, currentNumber, calcTypeChanger);
+    }
 }) 
+
+function calculateNumbers(a, b, operation) {
+    switch (operation) {
+        case 'plus':
+            return add(a,b);
+        case 'minus':
+            return substract(a,b);
+        case 'divider':
+            return divide(a,b);
+        case 'multiplier':
+            return multiply(a,b);
+    }
+}
 
 function add(a,b) {
     return a + b;
@@ -197,3 +146,8 @@ function divide(a,b) {
     return a / b;
 }
 
+
+function debug(summary, currentNumber, calcTypeChanger) {
+    const d = document.getElementById('debug');
+    d.innerHTML = `${summary} ${calcTypeChanger} ${currentNumber}`
+}
